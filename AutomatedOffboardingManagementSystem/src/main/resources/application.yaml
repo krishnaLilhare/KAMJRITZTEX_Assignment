@@ -1,4 +1,6 @@
 spring:
+  application:
+    name : AutomatedOffboardingManagementSystem
   datasource :
     url : jdbc:mysql://localhost:3306/offboarding_db
     username : root
