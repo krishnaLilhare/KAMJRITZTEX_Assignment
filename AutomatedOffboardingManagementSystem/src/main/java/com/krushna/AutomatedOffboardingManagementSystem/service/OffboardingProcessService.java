@@ -22,6 +22,9 @@ public class OffboardingProcessService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    private DepartmentClearanceService departmentClearanceService;
+
     public List<OffboardingProcess> getAllOffboardingProcesses() {
         return offboardingProcessRepository.findAll();
     }
@@ -44,6 +47,7 @@ public class OffboardingProcessService {
         }
         process.setStatus(OffBoardingStatus.PENDING);
         process.setStartDate(new Date());
+        departmentClearanceService.save(employee.get().getId());
         return offboardingProcessRepository.save(process);
     }
 
@@ -56,6 +60,7 @@ public class OffboardingProcessService {
     public OffboardingProcess complteOffboardingProcess(Long id) {
         OffboardingProcess process = getOffboardingProcessById(id);
         process.setStatus(OffBoardingStatus.COMPLETED);
+        process.setEndDate(new Date());
         return offboardingProcessRepository.save(process);
     }
 

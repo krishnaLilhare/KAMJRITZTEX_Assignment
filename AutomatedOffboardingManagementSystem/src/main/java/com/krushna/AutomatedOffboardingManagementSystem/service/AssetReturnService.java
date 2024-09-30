@@ -5,6 +5,7 @@ import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
 import com.krushna.AutomatedOffboardingManagementSystem.model.enums.AssetStatus;
 import com.krushna.AutomatedOffboardingManagementSystem.model.enums.Department;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.AssetReturnRepository;
+import com.krushna.AutomatedOffboardingManagementSystem.repository.DepartmentClearanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class AssetReturnService {
     private AssetReturnRepository assetReturnRepository;
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    DepartmentClearanceRepository departmentClearanceRepository;
 
     public List<AssetReturn> getAllAssetReturns() {
         return assetReturnRepository.findAll();

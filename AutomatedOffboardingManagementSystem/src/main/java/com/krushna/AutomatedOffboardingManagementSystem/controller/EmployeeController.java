@@ -48,4 +48,8 @@ public class EmployeeController {
     public ResponseEntity<Employee> returnAsset(@PathVariable Long asset_id){
         return ResponseEntity.ok(employeeService.returnAsset(asset_id));
     }
+
+    @PostMapping("/complete_asset/{id}")
+    public ResponseEntity<Employee> completeOffBoarding(@PathVariable Long id){
+        return ResponseEntity.ok(employeeService.completeOffBoarding(id));    }
 }

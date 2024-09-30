@@ -25,7 +25,7 @@ public class DepartmentClearanceController {
         return ResponseEntity.ok(clearance);
     }
 
-    @PutMapping("/{id}/approve")
+    @PutMapping("/approve/{id}")
     public ResponseEntity<DepartmentClearance> approveClearance(@PathVariable Long id) {
         DepartmentClearance approvedClearance = departmentClearanceService.approveClearance(id);
         return ResponseEntity.ok(approvedClearance);

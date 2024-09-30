@@ -1,18 +1,31 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
+import com.krushna.AutomatedOffboardingManagementSystem.model.AssetReturn;
 import com.krushna.AutomatedOffboardingManagementSystem.model.DepartmentClearance;
+import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.AssetStatus;
 import com.krushna.AutomatedOffboardingManagementSystem.model.enums.DepartmentStatus;
+import com.krushna.AutomatedOffboardingManagementSystem.repository.AssetReturnRepository;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.DepartmentClearanceRepository;
+import com.krushna.AutomatedOffboardingManagementSystem.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentClearanceService {
 
     @Autowired
     private DepartmentClearanceRepository departmentClearanceRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private AssetReturnRepository assetReturnRepository;
 
     public List<DepartmentClearance> getAllClearances() {
         return departmentClearanceRepository.findAll();
@@ -25,7 +38,12 @@ public class DepartmentClearanceService {
 
     public DepartmentClearance approveClearance(Long id) {
         DepartmentClearance clearance = getClearanceById(id);
-        clearance.setStatus(DepartmentStatus.APPROVED);
+        AssetReturn assetReturn =clearance.getAsset();
+        if (assetReturn.getStatus().equals(AssetStatus.RETURNED)) {
+            clearance.setStatus(DepartmentStatus.APPROVED);
+        }else {
+            throw new RuntimeException("Asset is not returned yet");
+        }
         return departmentClearanceRepository.save(clearance);
     }
 
@@ -33,5 +51,22 @@ public class DepartmentClearanceService {
         DepartmentClearance clearance = getClearanceById(id);
         clearance.setStatus(DepartmentStatus.PENDING);
         return departmentClearanceRepository.save(clearance);
+    }
+
+    public DepartmentClearance save(Long emp_id){
+      Optional<Employee> employee= employeeRepository.findById(emp_id);
+        DepartmentClearance departmentClearance = null;
+      if(employee.isPresent()){
+          List<AssetReturn> assetReturns = assetReturnRepository.getAssetsByEmployeeId(employee.get().getId());
+          for (AssetReturn assetReturn:assetReturns){
+               departmentClearance = new DepartmentClearance();
+               departmentClearance.setStatus(DepartmentStatus.PENDING);
+               departmentClearance.setDepartment(assetReturn.getAssetDept());
+               departmentClearance.setAsset(assetReturn);
+               departmentClearance.setEmployee(employee.get());
+               departmentClearanceRepository.save(departmentClearance);
+          }
+      }
+      return departmentClearance;
     }
 }

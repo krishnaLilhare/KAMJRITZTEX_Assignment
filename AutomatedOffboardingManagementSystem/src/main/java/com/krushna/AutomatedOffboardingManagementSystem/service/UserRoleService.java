@@ -38,7 +38,6 @@ public class UserRoleService {
         if (!existingRole.isPresent()) {
             throw new RuntimeException("User does not have the role: " + role);
         }
-
         userRoleRepository.deleteByUserIdAndRole(userId, role);
     }
 }

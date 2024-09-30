@@ -13,12 +13,15 @@ public class DepartmentClearance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Department department;
+    private DepartmentStatus status;
+    private Date approvalDate;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    private Department department;
-    private DepartmentStatus status;
-    private Date approvalDate;
+    @ManyToOne
+    @JoinColumn(name = "asset_id")
+    private AssetReturn asset;
 }
