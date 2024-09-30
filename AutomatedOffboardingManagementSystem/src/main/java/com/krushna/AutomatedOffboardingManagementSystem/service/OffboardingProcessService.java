@@ -1,18 +1,26 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
+import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
 import com.krushna.AutomatedOffboardingManagementSystem.model.OffboardingProcess;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.EmployeeStatus;
 import com.krushna.AutomatedOffboardingManagementSystem.model.enums.OffBoardingStatus;
+import com.krushna.AutomatedOffboardingManagementSystem.repository.EmployeeRepository;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.OffboardingProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OffboardingProcessService {
 
     @Autowired
     private OffboardingProcessRepository offboardingProcessRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     public List<OffboardingProcess> getAllOffboardingProcesses() {
         return offboardingProcessRepository.findAll();
@@ -24,19 +32,30 @@ public class OffboardingProcessService {
     }
 
     public OffboardingProcess startOffboardingProcess(OffboardingProcess process) {
+        Long id =process.getEmployee().getId();
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if(employee.isPresent()) {
+            employee.get().setStatus(EmployeeStatus.OFFBOARDING);
+            employeeRepository.save(employee.get());
+            process.setEmployee(employee.get());
+        }
+        else {
+            throw new RuntimeException("Employee not found");
+        }
         process.setStatus(OffBoardingStatus.PENDING);
+        process.setStartDate(new Date());
         return offboardingProcessRepository.save(process);
     }
 
     public OffboardingProcess approveOffboardingProcess(Long id) {
         OffboardingProcess process = getOffboardingProcessById(id);
-        process.setStatus(OffBoardingStatus.COMPLETED);
+        process.setStatus(OffBoardingStatus.IN_PROGRESS);
         return offboardingProcessRepository.save(process);
     }
 
-    public OffboardingProcess rejectOffboardingProcess(Long id) {
+    public OffboardingProcess complteOffboardingProcess(Long id) {
         OffboardingProcess process = getOffboardingProcessById(id);
-        process.setStatus(OffBoardingStatus.IN_PROGRESS);
+        process.setStatus(OffBoardingStatus.COMPLETED);
         return offboardingProcessRepository.save(process);
     }
 

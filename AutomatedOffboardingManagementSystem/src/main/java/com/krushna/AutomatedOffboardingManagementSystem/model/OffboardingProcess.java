@@ -11,12 +11,11 @@ public class OffboardingProcess {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Date startDate;
+    private Date endDate;
+    private OffBoardingStatus status;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
-
-    private Date startDate;
-    private Date endDate;
-    private OffBoardingStatus status;
 }

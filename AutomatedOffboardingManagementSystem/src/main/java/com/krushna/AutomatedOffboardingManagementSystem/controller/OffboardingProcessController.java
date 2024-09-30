@@ -38,9 +38,9 @@ public class OffboardingProcessController {
         return ResponseEntity.ok(approvedProcess);
     }
 
-    @PutMapping("/{id}/reject")
-    public ResponseEntity<OffboardingProcess> rejectOffboardingProcess(@PathVariable Long id) {
-        OffboardingProcess rejectedProcess = offboardingProcessService.rejectOffboardingProcess(id);
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<OffboardingProcess> completeOffboardingProcess(@PathVariable Long id) {
+        OffboardingProcess rejectedProcess = offboardingProcessService.complteOffboardingProcess(id);
         return ResponseEntity.ok(rejectedProcess);
     }
 

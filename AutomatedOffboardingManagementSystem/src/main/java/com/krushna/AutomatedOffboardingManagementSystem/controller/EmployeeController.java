@@ -43,4 +43,9 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/return_asset/{asset_id}")
+    public ResponseEntity<Employee> returnAsset(@PathVariable Long asset_id){
+        return ResponseEntity.ok(employeeService.returnAsset(asset_id));
+    }
 }
