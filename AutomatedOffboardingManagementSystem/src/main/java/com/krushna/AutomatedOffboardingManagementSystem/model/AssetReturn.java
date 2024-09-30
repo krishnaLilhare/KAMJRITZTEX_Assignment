@@ -1,5 +1,7 @@
 package com.krushna.AutomatedOffboardingManagementSystem.model;
 
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.AssetStatus;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.Department;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;
@@ -16,6 +18,7 @@ public class AssetReturn {
     private Employee employee;
 
     private String assetName;
-    private String status; // Pending, Returned
+    private AssetStatus status;
+    private Department assetDept;
     private Date returnDate;
 }

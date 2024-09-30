@@ -1,6 +1,7 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
 import com.krushna.AutomatedOffboardingManagementSystem.model.DepartmentClearance;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.DepartmentStatus;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.DepartmentClearanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,13 @@ public class DepartmentClearanceService {
 
     public DepartmentClearance approveClearance(Long id) {
         DepartmentClearance clearance = getClearanceById(id);
-        clearance.setStatus("Approved");
+        clearance.setStatus(DepartmentStatus.APPROVED);
         return departmentClearanceRepository.save(clearance);
     }
 
     public DepartmentClearance rejectClearance(Long id) {
         DepartmentClearance clearance = getClearanceById(id);
-        clearance.setStatus("Rejected");
+        clearance.setStatus(DepartmentStatus.PENDING);
         return departmentClearanceRepository.save(clearance);
     }
 }

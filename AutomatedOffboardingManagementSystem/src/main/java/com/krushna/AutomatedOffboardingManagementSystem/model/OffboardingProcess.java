@@ -1,5 +1,6 @@
 package com.krushna.AutomatedOffboardingManagementSystem.model;
 
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.OffBoardingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;
@@ -17,5 +18,5 @@ public class OffboardingProcess {
 
     private Date startDate;
     private Date endDate;
-    private String status; // Pending, In Progress, Completed
+    private OffBoardingStatus status;
 }

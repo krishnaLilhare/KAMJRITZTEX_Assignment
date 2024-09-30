@@ -1,5 +1,7 @@
 package com.krushna.AutomatedOffboardingManagementSystem.model;
 
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.Department;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.EmployeeStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +17,6 @@ public class Employee {
 
     private String name;
     private String email;
-    private String department;
-    private String role;  // User, Admin, Super Admin
-    private String status; // Active, Offboarding, Exited
+    private Department department;
+    private EmployeeStatus status;
 }

@@ -1,6 +1,9 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
 import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.Department;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.DepartmentStatus;
+import com.krushna.AutomatedOffboardingManagementSystem.model.enums.EmployeeStatus;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,10 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
+        employee.setStatus(EmployeeStatus.ACTIVE);
+        if(employee.getDepartment()==null) {
+            employee.setDepartment(Department.DEVELOPMENT);
+        }
         return employeeRepository.save(employee);
     }
 
@@ -31,7 +38,6 @@ public class EmployeeService {
         employee.setName(employeeDetails.getName());
         employee.setEmail(employeeDetails.getEmail());
         employee.setDepartment(employeeDetails.getDepartment());
-        employee.setRole(employeeDetails.getRole());
         employee.setStatus(employeeDetails.getStatus());
 
         return employeeRepository.save(employee);

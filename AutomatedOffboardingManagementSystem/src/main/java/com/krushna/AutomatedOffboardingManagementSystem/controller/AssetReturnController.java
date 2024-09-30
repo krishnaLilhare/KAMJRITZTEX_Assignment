@@ -26,15 +26,15 @@ public class AssetReturnController {
         return ResponseEntity.ok(assetReturn);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<AssetReturn> createAssetReturn(@RequestBody AssetReturn assetReturn) {
         AssetReturn newAssetReturn = assetReturnService.createAssetReturn(assetReturn);
         return ResponseEntity.ok(newAssetReturn);
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<AssetReturn> updateAssetReturnStatus(@PathVariable Long id, @RequestBody String status) {
-        AssetReturn updatedAssetReturn = assetReturnService.updateAssetReturnStatus(id, status);
+    @PutMapping("/{id}")
+    public ResponseEntity<AssetReturn> updateAssetReturnStatus(@PathVariable Long id) {
+        AssetReturn updatedAssetReturn = assetReturnService.updateAssetReturnStatus(id);
         return ResponseEntity.ok(updatedAssetReturn);
     }
 
