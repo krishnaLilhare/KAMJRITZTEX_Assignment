@@ -10,15 +10,14 @@ import com.krushna.AutomatedOffboardingManagementSystem.repository.DepartmentCle
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AssetReturnService {
 
     @Autowired
     private AssetReturnRepository assetReturnRepository;
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -32,13 +31,14 @@ public class AssetReturnService {
     public AssetReturn getAssetReturnById(Long id) {
         return assetReturnRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException("Asset return not found",
-                        String.format("Asset with id=%d not found", id),
-                        HttpStatus.NOT_FOUND));
+                                       String.format("Asset with id=%d not found", id),
+                                       HttpStatus.NOT_FOUND));
     }
 
     public AssetReturn createAssetReturn(AssetReturn assetReturn) {
-        Long id =assetReturn.getEmployee().getId();
+       Long id =assetReturn.getEmployee().getId();
        Employee employee =employeeService.getEmployeeById(id);
+
        if(employee!=null)
          assetReturn.setEmployee(employee);
        else
@@ -47,7 +47,9 @@ public class AssetReturnService {
                    String.format("Employee with id=%d not found", id),
                    HttpStatus.NOT_FOUND
            );
+
        assetReturn.setStatus(AssetStatus.PENDING);
+
        if(assetReturn.getAssetDept().equals("ADMIN")){
            assetReturn.setAssetDept(Department.ADMIN);
        } else if (assetReturn.getAssetDept().equals("HR")) {
@@ -62,12 +64,14 @@ public class AssetReturnService {
 
     public AssetReturn updateAssetReturnStatus(Long id) {
         AssetReturn assetReturn = getAssetReturnById(id);
+
         if(assetReturn == null)
             throw new ApplicationException(
                     "Asset not found",
                     String.format("Asset with id=%d not found", id),
                     HttpStatus.NOT_FOUND
             );
+
         assetReturn.setStatus(AssetStatus.RETURNED);
         return assetReturnRepository.save(assetReturn);
     }

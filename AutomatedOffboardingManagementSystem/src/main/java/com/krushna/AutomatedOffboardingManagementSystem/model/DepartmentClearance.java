@@ -4,7 +4,6 @@ import com.krushna.AutomatedOffboardingManagementSystem.model.enums.Department;
 import com.krushna.AutomatedOffboardingManagementSystem.model.enums.DepartmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.Date;
 
 @Entity

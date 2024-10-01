@@ -12,13 +12,13 @@ public class AssetReturn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String assetName;
+    private AssetStatus status;
+    private Department assetDept;
+    private Date returnDate;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    private String assetName;
-    private AssetStatus status;
-    private Department assetDept;
-    private Date returnDate;
 }

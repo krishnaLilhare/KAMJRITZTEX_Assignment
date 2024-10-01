@@ -16,7 +16,6 @@ import com.krushna.AutomatedOffboardingManagementSystem.repository.OffboardingPr
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +44,9 @@ public class EmployeeService {
 
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id).orElseThrow(() -> new ApplicationException(
-                "Employee not found",
-                String.format("Employee with id=%d not found", id),
-                HttpStatus.NOT_FOUND
-        ));
+                                                              "Employee not found..........!!!!!!!!!!!!",
+                                                              String.format("Employee with id=%d not found", id),
+                                                              HttpStatus.NOT_FOUND));
     }
 
     public Employee createEmployee(Employee employee) {
@@ -83,6 +81,7 @@ public class EmployeeService {
         ));
         employeeRepository.delete(employee);
     }
+
     public AssetReturn returnAsset(Long id){
         Employee employee = null;
         Optional<AssetReturn> assetReturn = assetReturnRepository.findById(id);
@@ -114,7 +113,6 @@ public class EmployeeService {
         return assetReturn.get();
     }
 
-
     public Employee completeOffBoarding(Long emp_id) {
         Employee employee = employeeRepository.findById(emp_id).get();
         List<AssetReturn> assetReturns = assetReturnRepository.getAssetsByEmployeeId(emp_id);
@@ -130,6 +128,7 @@ public class EmployeeService {
                    }
                }
         }
+
         if(flag){
             OffboardingProcess offboarding = offboardingProcessRepository.findOffBoardingByEmployeeId(emp_id);
             if(offboarding!= null)

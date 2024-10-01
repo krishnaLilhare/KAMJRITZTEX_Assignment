@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Slf4j
 @RestControllerAdvice
@@ -21,11 +19,6 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     public ResponseEntity<?> handleApplicationException(
             final ApplicationException exception, final HttpServletRequest request
     ) {
-        var guid = UUID.randomUUID().toString();
-        log.error(
-                String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()),
-                exception
-        );
         var response = new ApiErrorResponse(
                 exception.getErrorCode(),
                 exception.getMessage(),
@@ -39,11 +32,6 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     public ResponseEntity<?> handleUnknownException(
             final Exception exception, final HttpServletRequest request
     ) {
-        var guid = UUID.randomUUID().toString();
-        log.error(
-                String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()),
-                exception
-        );
         var response = new ApiErrorResponse(
                 "",
                 "Internal server error",
