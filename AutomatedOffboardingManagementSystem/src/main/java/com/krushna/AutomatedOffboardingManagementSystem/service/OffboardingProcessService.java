@@ -1,5 +1,6 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
+import com.krushna.AutomatedOffboardingManagementSystem.exception.ApplicationException;
 import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
 import com.krushna.AutomatedOffboardingManagementSystem.model.OffboardingProcess;
 import com.krushna.AutomatedOffboardingManagementSystem.model.enums.EmployeeStatus;
@@ -7,6 +8,7 @@ import com.krushna.AutomatedOffboardingManagementSystem.model.enums.OffBoardingS
 import com.krushna.AutomatedOffboardingManagementSystem.repository.EmployeeRepository;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.OffboardingProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -31,7 +33,11 @@ public class OffboardingProcessService {
 
     public OffboardingProcess getOffboardingProcessById(Long id) {
         return offboardingProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Offboarding Process not found"));
+                .orElseThrow(() -> new ApplicationException(
+                        "Offboarding Process not found",
+                        String.format("Offboarding with id=%d not found", id),
+                        HttpStatus.NOT_FOUND
+                ));
     }
 
     public OffboardingProcess startOffboardingProcess(OffboardingProcess process) {
@@ -43,7 +49,11 @@ public class OffboardingProcessService {
             process.setEmployee(employee.get());
         }
         else {
-            throw new RuntimeException("Employee not found");
+            throw new ApplicationException(
+                    "Employee not found",
+                    String.format("Employee with id=%d not found", id),
+                    HttpStatus.NOT_FOUND
+            );
         }
         process.setStatus(OffBoardingStatus.PENDING);
         process.setStartDate(new Date());

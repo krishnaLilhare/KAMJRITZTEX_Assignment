@@ -1,5 +1,6 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
+import com.krushna.AutomatedOffboardingManagementSystem.exception.ApplicationException;
 import com.krushna.AutomatedOffboardingManagementSystem.model.AssetReturn;
 import com.krushna.AutomatedOffboardingManagementSystem.model.DepartmentClearance;
 import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
@@ -13,6 +14,7 @@ import com.krushna.AutomatedOffboardingManagementSystem.repository.DepartmentCle
 import com.krushna.AutomatedOffboardingManagementSystem.repository.EmployeeRepository;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.OffboardingProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -42,7 +44,11 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
+        return employeeRepository.findById(id).orElseThrow(() -> new ApplicationException(
+                "Employee not found",
+                String.format("Employee with id=%d not found", id),
+                HttpStatus.NOT_FOUND
+        ));
     }
 
     public Employee createEmployee(Employee employee) {
@@ -54,7 +60,12 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Long id, Employee employeeDetails) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ApplicationException(
+                "Employee not found",
+                String.format("Employee with id=%d not found", id),
+                HttpStatus.NOT_FOUND
+
+        ));
 
         employee.setName(employeeDetails.getName());
         employee.setEmail(employeeDetails.getEmail());
@@ -65,7 +76,11 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ApplicationException(
+                "Employee not found",
+                String.format("Employee with id=%d not found", id),
+                HttpStatus.NOT_FOUND
+        ));
         employeeRepository.delete(employee);
     }
     public Employee returnAsset(Long id){
@@ -81,10 +96,18 @@ public class EmployeeService {
                    if (offboarding != null) {
                        offboardingProcessService.approveOffboardingProcess(offboarding.getId());
                    } else {
-                       throw new RuntimeException("OffBoarding Not Found");
+                       throw new ApplicationException(
+                               "OffBoarding Not Found..........!!!!!!!!",
+                               String.format("Off-Boarding with employee id=%d not found", id),
+                               HttpStatus.NOT_FOUND
+                       );
                    }
                } else {
-                   throw new RuntimeException("Status Should Be OFFBOARDING");
+                   throw new ApplicationException(
+                           "Status Should Be OFFBOARDING.........!!!! First apply for off boarding.",
+                           " ",
+                           HttpStatus.NOT_FOUND
+                   );
                }
            }
         return employee;
@@ -114,10 +137,18 @@ public class EmployeeService {
             {
                 offboardingProcessService.complteOffboardingProcess(offboarding.getId());
             }else{
-                throw new RuntimeException("OffBoarding Not Found!!!! ...........please submit all the asset.");
+                throw new ApplicationException(
+                        "OffBoarding Not Found!!!! ...........please first submit all the remaining asset.",
+                        String.format("Off-Boarding with employee id=%d not found", emp_id),
+                        HttpStatus.NOT_FOUND
+                );
             }
         }else{
-            throw new RuntimeException("Please check pending assets Or Please check with Departmental Approve..!!!!!!!");
+            throw new ApplicationException(
+                    "Please check pending assets Or Please check with Departmental Approve..!!!!!!!",
+                    " ",
+                    HttpStatus.NOT_FOUND
+            );
         }
         employee.setStatus(EmployeeStatus.EXITED);
       return employeeRepository.save(employee);

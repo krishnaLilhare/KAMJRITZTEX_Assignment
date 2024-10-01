@@ -1,5 +1,6 @@
 package com.krushna.AutomatedOffboardingManagementSystem.service;
 
+import com.krushna.AutomatedOffboardingManagementSystem.exception.ApplicationException;
 import com.krushna.AutomatedOffboardingManagementSystem.model.AssetReturn;
 import com.krushna.AutomatedOffboardingManagementSystem.model.DepartmentClearance;
 import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
@@ -9,6 +10,7 @@ import com.krushna.AutomatedOffboardingManagementSystem.repository.AssetReturnRe
 import com.krushna.AutomatedOffboardingManagementSystem.repository.DepartmentClearanceRepository;
 import com.krushna.AutomatedOffboardingManagementSystem.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -33,7 +35,11 @@ public class DepartmentClearanceService {
 
     public DepartmentClearance getClearanceById(Long id) {
         return departmentClearanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Clearance not found"));
+                .orElseThrow(() -> new ApplicationException(
+                        "Clearance not found",
+                        String.format("Department clearance with id=%d not found", id),
+                        HttpStatus.NOT_FOUND
+                ));
     }
 
     public DepartmentClearance approveClearance(Long id) {
@@ -42,7 +48,11 @@ public class DepartmentClearanceService {
         if (assetReturn.getStatus().equals(AssetStatus.RETURNED)) {
             clearance.setStatus(DepartmentStatus.APPROVED);
         }else {
-            throw new RuntimeException("Asset is not returned yet");
+            throw new ApplicationException(
+                    "Asset is not returned yet............!!!!!!!!!",
+                   " ",
+                    HttpStatus.NOT_FOUND
+            );
         }
         return departmentClearanceRepository.save(clearance);
     }
