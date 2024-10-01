@@ -1,5 +1,6 @@
 package com.krushna.AutomatedOffboardingManagementSystem.controller;
 
+import com.krushna.AutomatedOffboardingManagementSystem.model.AssetReturn;
 import com.krushna.AutomatedOffboardingManagementSystem.model.Employee;
 import com.krushna.AutomatedOffboardingManagementSystem.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/return_asset/{asset_id}")
-    public ResponseEntity<Employee> returnAsset(@PathVariable Long asset_id){
+    public ResponseEntity<AssetReturn> returnAsset(@PathVariable Long asset_id){
         return ResponseEntity.ok(employeeService.returnAsset(asset_id));
     }
 

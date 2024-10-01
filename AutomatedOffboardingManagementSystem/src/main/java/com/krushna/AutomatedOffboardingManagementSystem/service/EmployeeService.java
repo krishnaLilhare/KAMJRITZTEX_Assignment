@@ -83,7 +83,7 @@ public class EmployeeService {
         ));
         employeeRepository.delete(employee);
     }
-    public Employee returnAsset(Long id){
+    public AssetReturn returnAsset(Long id){
         Employee employee = null;
         Optional<AssetReturn> assetReturn = assetReturnRepository.findById(id);
         if(assetReturn.isPresent())
@@ -91,6 +91,7 @@ public class EmployeeService {
            employee =assetReturn.get().getEmployee();
                if (employee.getStatus().equals(EmployeeStatus.OFFBOARDING) ) {
                    assetReturn.get().setStatus(AssetStatus.RETURNED);
+                   assetReturn.get().setReturnDate(new Date());
                    assetReturnRepository.save(assetReturn.get());
                    OffboardingProcess offboarding = offboardingProcessRepository.findOffBoardingByEmployeeId(employee.getId());
                    if (offboarding != null) {
@@ -110,7 +111,7 @@ public class EmployeeService {
                    );
                }
            }
-        return employee;
+        return assetReturn.get();
     }
 
 
@@ -125,8 +126,6 @@ public class EmployeeService {
                        flag = false;
                        break;
                    } else {
-                       asset.setReturnDate(new Date());
-                       assetReturnRepository.save(asset);
                        flag = true;
                    }
                }

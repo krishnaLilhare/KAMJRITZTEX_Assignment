@@ -47,6 +47,7 @@ public class DepartmentClearanceService {
         AssetReturn assetReturn =clearance.getAsset();
         if (assetReturn.getStatus().equals(AssetStatus.RETURNED)) {
             clearance.setStatus(DepartmentStatus.APPROVED);
+            clearance.setApprovalDate(new Date());
         }else {
             throw new ApplicationException(
                     "Asset is not returned yet............!!!!!!!!!",
